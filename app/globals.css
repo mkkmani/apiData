@@ -3,31 +3,138 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --dark-bg: #0c0f14;
+  --light-bg: #f0f0f0;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  min-height: 100vh;
+  background: var(--dark-bg);
+  color: lightgray;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+.dark-theme {
+  background-color: var(--dark-bg) !important;
+  color: var(--light-bg) !important;
+}
+
+.light-theme {
+  background-color: var(--light-bg);
+  color: var(--dark-bg);
+}
+
+.theme-switch.switch {
+  font-size: 14px;
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.theme-switch.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-switch.switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #73c0fc;
+  transition: 0.4s;
+  border-radius: 12px;
+}
+
+.theme-switch.switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  left: 2px;
+  bottom: 2px;
+  z-index: 2;
+  background-color: #e8e8e8;
+  transition: 0.4s;
+}
+
+.theme-switch.switch .sun svg {
+  position: absolute;
+  top: 3px;
+  left: 30px;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+}
+
+.theme-switch.switch .moon svg {
+  fill: #73c0fc;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+}
+
+.theme-switch.switch .sun svg {
+  animation: rotate 15s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
   }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.theme-switch.switch .moon svg {
+  animation: tilt 5s linear infinite;
+}
+
+@keyframes tilt {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-10deg);
+  }
+
+  75% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.theme-switch.switch .input:checked + .slider {
+  background-color: #183153;
+}
+
+.theme-switch.switch .input:focus + .slider {
+  box-shadow: 0 0 1px #183153;
+}
+
+.theme-switch.switch .input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+.editor-div {
+  max-width: 600px;
+}
+
+select,
+option,
+input {
+  background-color: transparent;
 }
