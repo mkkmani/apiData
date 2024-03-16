@@ -2,22 +2,31 @@
 
 import { useState } from "react";
 import CodeEditor from "../editor.js";
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ApiDataExtractor = () => {
   const [bodyData, setBodyData] = useState("");
   const [method, setMethod] = useState("GET");
   const [api, setApi] = useState("");
-  // const [apiData, setDataFromApi] = useState({});
+  const [cookie, setCookie] = useState("");
 
   const addCodeData = (code) => {
     setBodyData(code);
   };
 
+  const setCookieHandler = () => {
+    Cookies.set("apiCookie", cookie);
+    toast.error("Cookie saved");
+  };
+
   const getResponse = async () => {
     try {
-      const response = await fetch(api, {
-        cache: "no-cache",
-      });
+      const options = {
+        method: "GET",
+      };
+      const response = await fetch(api, options);
 
       if (!response.ok) {
         throw new Error("Failed to fetch API data");
@@ -25,10 +34,9 @@ const ApiDataExtractor = () => {
 
       const data = await response.json();
 
-      // setApiData(data); // Set fetched API data to state
       console.log("next api data", data);
     } catch (error) {
-      console.error("Error fetching API data:", error);
+      console.error("Error fetching API data:", error.message);
     }
   };
 
@@ -38,6 +46,7 @@ const ApiDataExtractor = () => {
 
   return (
     <div className="flex justify-center items-center w-full">
+      {/* <ToastContainer /> */}
       <form className="bg-transparent fit-content flex flex-col gap-2">
         <div className="flex flex-row gap-2">
           <select
@@ -69,10 +78,28 @@ const ApiDataExtractor = () => {
         <div>{bodyData && <pre>{bodyData}</pre>}</div>
 
         <button type="button" onClick={getResponse}>
-          Get api data
+          Get API data
         </button>
 
-        {/* <div>{apiData && <pre>{apiData}</pre>}</div> */}
+        <div>
+          <input
+            type="text"
+            value={cookie}
+            onChange={(e) => setCookie(e.target.value)}
+            className="border p-1"
+            placeholder="Enter token"
+          />
+
+          <div>
+            <button
+              type="button"
+              onClick={setCookieHandler}
+              className="border p-1 m-2"
+            >
+              Add cookie
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   );
